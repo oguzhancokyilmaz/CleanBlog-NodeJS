@@ -4,6 +4,7 @@ const ejs = require('ejs');
 const path = require('path');
 const Photo = require('./models/Post');
 const Post = require('./models/Post');
+var moment = require('moment');
 
 const app = express();
 
@@ -34,8 +35,12 @@ app.get('/about', (req, res) => {
 app.get('/add_post', (req, res) => {
   res.render('add_post');
 });
-app.get('/post', (req, res) => {
-  res.render('post');
+app.get('/listPosts/:id',async (req, res) => {
+  const post = await Post.findById(req.params.id)
+  
+  res.render('post',{
+    post
+  });
 });
 app.post('/posts', async (req, res) => {
   await Post.create(req.body);
